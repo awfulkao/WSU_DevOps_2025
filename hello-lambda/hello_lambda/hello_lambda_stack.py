@@ -1,7 +1,7 @@
 from aws_cdk import (
-    # Duration,
     Stack,
-    # aws_sqs as sqs,
+    aws_apigateway as apigw,
+    aws_lambda as _lambda
 )
 from constructs import Construct
 
@@ -10,10 +10,17 @@ class HelloLambdaStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # The code that defines your stack goes here
+        fn = _lambda.Function(
+            self,
+            "MyFunction",
+            runtime=_lambda.Runtime.NODEJS_LATEST,
+            handler="index.handler",
+            code=_lambda.Code.from_asset("lib/lambda-handler")
+        )
 
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "HelloLambdaQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )
+        endpoint = apigw.LambdaRestApi(
+            self,
+            "ApiGwEndpoint",
+            handler=fn,
+            rest_api_name="HelloApi"
+        )
