@@ -1,1 +1,1 @@
-{"statusCode": 200, "body": "{\"url\": \"https://www.google.com\", \"available\": true, \"status_code\": 200, \"latency_ms\": 726.2294292449951, \"metrics_sent\": true}"}
+{"statusCode": 200, "body": "[{\"url\": \"https://httpbin.org/delay/5\", \"available\": true, \"status_code\": 200, \"latency_ms\": 7863.340305999998, \"metrics_sent\": true}]"}
