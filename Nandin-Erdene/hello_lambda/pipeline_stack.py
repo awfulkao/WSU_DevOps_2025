@@ -10,7 +10,7 @@ from aws_cdk import (
 from constructs import Construct
 
 # Import your application stage / stack
-from hello_stack import HelloLambdaStack  # adjust import to where your HelloLambdaStack class lives
+from hello_lambda.hello_lambda_stack import HelloLambdaStack  # adjust import to where your HelloLambdaStack class lives
 from aws_cdk import Stage
 
 class WebHealthAppStage(Stage):

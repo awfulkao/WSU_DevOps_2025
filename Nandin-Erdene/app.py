@@ -3,7 +3,7 @@ import aws_cdk as cdk
 from aws_cdk import Environment
 
 # Import the pipeline stack we built
-from pipeline_stack import PipelineStack
+from hello_lambda.pipeline_stack import PipelineStack
 
 # If you still want the option to deploy the app stack standalone
 # you can import HelloLambdaStack too:
@@ -13,8 +13,8 @@ app = cdk.App()
 
 # Define the environment (your AWS account + region)
 env = Environment(
-    account="YOUR_AWS_ACCOUNT_ID",   # e.g. "123456789012"
-    region="ap-southeast-2"          # or whatever region you’re using
+    account="353548851308",
+    region="ap-southeast-2"   
 )
 
 # Instantiate the pipeline

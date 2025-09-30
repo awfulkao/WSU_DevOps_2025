@@ -2,7 +2,7 @@
 import time
 import types
 from unittest import mock
-import WHlambda  # assuming your file is WHlambda.py
+import WHlambda
 
 class DummyResp:
     def __init__(self, status, data=b"OK"):
