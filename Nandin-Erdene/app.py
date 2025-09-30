@@ -1,27 +1,26 @@
 #!/usr/bin/env python3
-import os
+import aws_cdk as cdk
+from aws_cdk import Environment
 
-from aws_cdk import App, Environment
-from hello_lambda.hello_lambda_stack import HelloLambdaStack
+# Import the pipeline stack we built
+from pipeline_stack import PipelineStack
 
+# If you still want the option to deploy the app stack standalone
+# you can import HelloLambdaStack too:
+# from hello_stack import HelloLambdaStack
 
-app = App()
-HelloLambdaStack(app, "HelloLambdaStack",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
+app = cdk.App()
 
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
+# Define the environment (your AWS account + region)
+env = Environment(
+    account="YOUR_AWS_ACCOUNT_ID",   # e.g. "123456789012"
+    region="ap-southeast-2"          # or whatever region you’re using
+)
 
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
+# Instantiate the pipeline
+PipelineStack(app, "WebHealthPipelineStack", env=env)
 
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
-
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
-
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-    )
+# (Optional) Deploy HelloLambdaStack directly if needed for local testing
+# HelloLambdaStack(app, "WebHealthStandalone", env=env)
 
 app.synth()
