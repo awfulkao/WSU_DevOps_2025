@@ -1,4 +1,17 @@
-aws-cdk-lib
-constructs
-boto3
-urllib3
+aws-cdk-lib==2.156.0
+constructs>=10.0.0,<11.0.0
+
+# AWS SDK and helper libraries
+boto3>=1.34.0
+botocore>=1.34.0
+
+# Lambda and CloudWatch functionality
+requests>=2.31.0
+urllib3>=2.2.0
+
+# For AWS Config custom Lambda rule
+awscli>=1.32.0
+
+# Development tools
+pytest>=7.4.0
+pytest-mock>=3.12.0
