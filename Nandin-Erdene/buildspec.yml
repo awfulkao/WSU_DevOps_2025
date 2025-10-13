@@ -2,15 +2,31 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.12
     commands:
+      - echo Installing pip
       - python -m pip install --upgrade pip
+  pre_build:
+    commands:
+      - echo Installing project dependencies
       - pip install -r requirements.txt
-
+      - pip install -r requirements-dev.txt || true   # optional dev deps
   build:
     commands:
+      - echo Synthesizing CDK
       - cdk synth
+  post_build:
+    commands:
+      - echo Build completed
 
 artifacts:
   base-directory: cdk.out
   files:
     - '**/*'
+
+cache:
+  paths:
+    - 'lib/lambda_handler/**/*'
+    - 'hello_lambda/**/*'
+    - 'tests/**/*'
