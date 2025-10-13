@@ -1,0 +1,220 @@
+{
+  "version": "36.3.0",
+  "artifacts": {
+    "WebHealthPipelineStackGammaWebHealthStack96FC31B7.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "WebHealthPipelineStackGammaWebHealthStack96FC31B7.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "WebHealthPipelineStackGammaWebHealthStack96FC31B7": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://353548851308/ap-southeast-2",
+      "properties": {
+        "templateFile": "WebHealthPipelineStackGammaWebHealthStack96FC31B7.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": true,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-cfn-exec-role-353548851308-ap-southeast-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-353548851308-ap-southeast-2/d667ae1a4f03d11287a48a1122b73589c01265cb6d1a11f600d3bbcb38af6f3a.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "WebHealthPipelineStackGammaWebHealthStack96FC31B7.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-lookup-role-353548851308-ap-southeast-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        },
+        "stackName": "Gamma-WebHealthStack"
+      },
+      "dependencies": [
+        "WebHealthPipelineStackGammaWebHealthStack96FC31B7.assets"
+      ],
+      "metadata": {
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/MyFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyFunctionServiceRole3C357FF2"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/MyFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyFunctionServiceRoleDefaultPolicyB705ABD4"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/MyFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyFunction3BAA72D1"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/FiveMinuteSchedule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FiveMinuteSchedule35807022"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/FiveMinuteSchedule/AllowEventRuleWebHealthPipelineStackGammaWebHealthStackMyFunctionE451AC74": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FiveMinuteScheduleAllowEventRuleWebHealthPipelineStackGammaWebHealthStackMyFunctionE451AC74417C7B25"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/InvokeLambdaOnce/Resource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InvokeLambdaOnce74BF6FB1"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/InvokeLambdaOnce/CustomResourcePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InvokeLambdaOnceCustomResourcePolicyF72B0221"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AWS679f53fac002430cb0da5b7982bd2287": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-singleton",
+            "data": true
+          },
+          {
+            "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+            "data": 0
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AWS679f53fac002430cb0da5b7982bd2287/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWS679f53fac002430cb0da5b7982bd22872D164C4C"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/LambdaErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaErrorAlarm646BFA4C"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AvailabilityAlarmwwwgooglecom/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AvailabilityAlarmwwwgooglecomEB62BBC2"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/LatencyAlarmwwwgooglecom/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatencyAlarmwwwgooglecomA1AA05FE"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AvailabilityAlarmwwwtesthahacom/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AvailabilityAlarmwwwtesthahacomA4AE7118"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/LatencyAlarmwwwtesthahacom/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatencyAlarmwwwtesthahacom90374E4F"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AvailabilityAlarmwwwwikipediaorg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AvailabilityAlarmwwwwikipediaorgCF91C14B"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/LatencyAlarmwwwwikipediaorg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatencyAlarmwwwwikipediaorgAEAD10B8"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmTopicD01E77F9"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmTopic/kaonandin@gmail.com/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmTopickaonandingmailcomFD57D162"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmLogsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmLogsTable7C93252F"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmLoggerFn/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmLoggerFnServiceRoleB525D4AB"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmLoggerFn/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmLoggerFnServiceRoleDefaultPolicy9E108CB6"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmLoggerFn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmLoggerFnA7975084"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmLoggerFn/AllowInvoke:WebHealthPipelineStackGammaWebHealthStackAlarmTopic0AF320CD": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmLoggerFnAllowInvokeWebHealthPipelineStackGammaWebHealthStackAlarmTopic0AF320CD54B550E7"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/AlarmLoggerFn/AlarmTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmLoggerFnAlarmTopicC3A0677B"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/WebsiteHealthDashboard/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteHealthDashboardBC0D159E"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/WebHealthPipelineStack/Gamma/WebHealthStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "WebHealthPipelineStack/Gamma/WebHealthStack"
+    }
+  }
+}

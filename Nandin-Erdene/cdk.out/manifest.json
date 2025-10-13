@@ -1,0 +1,236 @@
+{
+  "version": "36.3.0",
+  "artifacts": {
+    "assembly-WebHealthPipelineStack-Beta": {
+      "type": "cdk:cloud-assembly",
+      "properties": {
+        "directoryName": "assembly-WebHealthPipelineStack-Beta",
+        "displayName": "WebHealthPipelineStack/Beta"
+      }
+    },
+    "assembly-WebHealthPipelineStack-Gamma": {
+      "type": "cdk:cloud-assembly",
+      "properties": {
+        "directoryName": "assembly-WebHealthPipelineStack-Gamma",
+        "displayName": "WebHealthPipelineStack/Gamma"
+      }
+    },
+    "assembly-WebHealthPipelineStack-Prod": {
+      "type": "cdk:cloud-assembly",
+      "properties": {
+        "directoryName": "assembly-WebHealthPipelineStack-Prod",
+        "displayName": "WebHealthPipelineStack/Prod"
+      }
+    },
+    "WebHealthPipelineStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "WebHealthPipelineStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "WebHealthPipelineStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://353548851308/ap-southeast-2",
+      "properties": {
+        "templateFile": "WebHealthPipelineStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-cfn-exec-role-353548851308-ap-southeast-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-353548851308-ap-southeast-2/a72c105ddccdbaf56a81d069350114366fc62a217d1957f8017faa361e9d8c42.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "WebHealthPipelineStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-lookup-role-353548851308-ap-southeast-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "WebHealthPipelineStack.assets"
+      ],
+      "metadata": {
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/ArtifactsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineArtifactsBucket5FCCC92B"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/ArtifactsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineArtifactsBucketPolicyB15BEEA7"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineRole505806FA"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineRoleDefaultPolicyDC9FA285"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipeline2D472B15"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Source/awfulkao_WSU_DevOps_2025/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineSourceawfulkaoWSUDevOps2025WebhookResourceA9E215A1"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Build/Synth/CdkBuildProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineBuildSynthCdkBuildProjectRole16CA354E"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Build/Synth/CdkBuildProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineBuildSynthCdkBuildProjectRoleDefaultPolicy1C9DF21A"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Build/Synth/CdkBuildProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Beta/UnitTests/UnitTests/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineBetaUnitTestsRole8EAC11FD"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Beta/UnitTests/UnitTests/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineBetaUnitTestsRoleDefaultPolicyA1E3B360"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Beta/UnitTests/UnitTests/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineBetaUnitTestsDDA63534"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Gamma/IntegrationTests/IntegrationTests/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineGammaIntegrationTestsRole5FF1CE96"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Gamma/IntegrationTests/IntegrationTests/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineGammaIntegrationTestsRoleDefaultPolicy3839F0AB"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Gamma/IntegrationTests/IntegrationTests/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineGammaIntegrationTests639D8036"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Pipeline/Prod/ManualApprovalBeforeProd/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineProdManualApprovalBeforeProdCodePipelineActionRole89A0CE3F"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/CodeBuildActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineCodeBuildActionRole8572EFE5"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/CodeBuildActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineCodeBuildActionRoleDefaultPolicy45547AB4"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/UpdatePipeline/SelfMutation/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineUpdatePipelineSelfMutationRole9E83793E"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/UpdatePipeline/SelfMutation/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineUpdatePipelineSelfMutationRoleDefaultPolicy067B4BFF"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/UpdatePipeline/SelfMutation/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Assets/FileRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineAssetsFileRole0CD2E979"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Assets/FileRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineAssetsFileRoleDefaultPolicy07FD2A63"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Assets/FileAsset1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineAssetsFileAsset184D6268B"
+          }
+        ],
+        "/WebHealthPipelineStack/WebHealthPipeline/Assets/FileAsset2/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebHealthPipelineAssetsFileAsset2D9A4BDA0"
+          }
+        ],
+        "/WebHealthPipelineStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/WebHealthPipelineStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/WebHealthPipelineStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "WebHealthPipelineStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

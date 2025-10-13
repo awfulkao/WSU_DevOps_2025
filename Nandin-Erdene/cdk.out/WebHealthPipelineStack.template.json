@@ -1,0 +1,1722 @@
+{
+ "Resources": {
+  "WebHealthPipelineArtifactsBucket5FCCC92B": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/ArtifactsBucket/Resource"
+   }
+  },
+  "WebHealthPipelineArtifactsBucketPolicyB15BEEA7": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "WebHealthPipelineArtifactsBucket5FCCC92B"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/ArtifactsBucket/Policy/Resource"
+   }
+  },
+  "WebHealthPipelineRole505806FA": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Role/Resource"
+   }
+  },
+  "WebHealthPipelineRoleDefaultPolicyDC9FA285": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineProdManualApprovalBeforeProdCodePipelineActionRole89A0CE3F",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineRoleDefaultPolicyDC9FA285",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineRole505806FA"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Role/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipeline2D472B15": {
+   "Type": "AWS::CodePipeline::Pipeline",
+   "Properties": {
+    "ArtifactStore": {
+     "Location": {
+      "Ref": "WebHealthPipelineArtifactsBucket5FCCC92B"
+     },
+     "Type": "S3"
+    },
+    "Name": "WebHealthPipeline",
+    "PipelineType": "V1",
+    "RestartExecutionOnUpdate": true,
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineRole505806FA",
+      "Arn"
+     ]
+    },
+    "Stages": [
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Source",
+         "Owner": "ThirdParty",
+         "Provider": "GitHub",
+         "Version": "1"
+        },
+        "Configuration": {
+         "Owner": "awfulkao",
+         "Repo": "WSU_DevOps_2025",
+         "Branch": "main",
+         "OAuthToken": "{{resolve:secretsmanager:github-token:SecretString:::}}",
+         "PollForSourceChanges": false
+        },
+        "Name": "awfulkao_WSU_DevOps_2025",
+        "OutputArtifacts": [
+         {
+          "Name": "awfulkao_WSU_DevOps_2025_Source"
+         }
+        ],
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Source"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53"
+         },
+         "EnvironmentVariables": "[{\"name\":\"_PROJECT_CONFIG_HASH\",\"type\":\"PLAINTEXT\",\"value\":\"f8eddd7c388210f516fecc692078fcedce3f2c75592c66b347b3dbb94e5ca5f0\"}]"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "awfulkao_WSU_DevOps_2025_Source"
+         }
+        ],
+        "Name": "Synth",
+        "OutputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Build"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1"
+         },
+         "EnvironmentVariables": "[{\"name\":\"_PROJECT_CONFIG_HASH\",\"type\":\"PLAINTEXT\",\"value\":\"67da00110f6839c93bfb11b2475ec3b0f674c7e2f306ab6ce711b94c60624eb9\"}]"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "SelfMutate",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "UpdatePipeline"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "WebHealthPipelineAssetsFileAsset184D6268B"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "FileAsset1",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "WebHealthPipelineAssetsFileAsset2D9A4BDA0"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "FileAsset2",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Assets"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "WebHealthPipelineBetaUnitTestsDDA63534"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "awfulkao_WSU_DevOps_2025_Source"
+         }
+        ],
+        "Name": "UnitTests",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Beta-WebHealthStack",
+         "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+         "RoleArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":iam::353548851308:role/cdk-hnb659fds-cfn-exec-role-353548851308-ap-southeast-2"
+           ]
+          ]
+         },
+         "ActionMode": "CHANGE_SET_REPLACE",
+         "ChangeSetName": "PipelineChange",
+         "TemplatePath": "Synth_Output::assembly-WebHealthPipelineStack-Beta/WebHealthPipelineStackBetaWebHealthStackB2FC8A21.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "WebHealthStack.Prepare",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        },
+        "RunOrder": 2
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Beta-WebHealthStack",
+         "ActionMode": "CHANGE_SET_EXECUTE",
+         "ChangeSetName": "PipelineChange"
+        },
+        "Name": "WebHealthStack.Deploy",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        },
+        "RunOrder": 3
+       }
+      ],
+      "Name": "Beta"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "WebHealthPipelineGammaIntegrationTests639D8036"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "awfulkao_WSU_DevOps_2025_Source"
+         }
+        ],
+        "Name": "IntegrationTests",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineCodeBuildActionRole8572EFE5",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Gamma-WebHealthStack",
+         "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+         "RoleArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":iam::353548851308:role/cdk-hnb659fds-cfn-exec-role-353548851308-ap-southeast-2"
+           ]
+          ]
+         },
+         "ActionMode": "CHANGE_SET_REPLACE",
+         "ChangeSetName": "PipelineChange",
+         "TemplatePath": "Synth_Output::assembly-WebHealthPipelineStack-Gamma/WebHealthPipelineStackGammaWebHealthStack96FC31B7.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "WebHealthStack.Prepare",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        },
+        "RunOrder": 2
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Gamma-WebHealthStack",
+         "ActionMode": "CHANGE_SET_EXECUTE",
+         "ChangeSetName": "PipelineChange"
+        },
+        "Name": "WebHealthStack.Deploy",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        },
+        "RunOrder": 3
+       }
+      ],
+      "Name": "Gamma"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Approval",
+         "Owner": "AWS",
+         "Provider": "Manual",
+         "Version": "1"
+        },
+        "Configuration": {
+         "CustomData": "Approve deploying WebHealth to PROD"
+        },
+        "Name": "ManualApprovalBeforeProd",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineProdManualApprovalBeforeProdCodePipelineActionRole89A0CE3F",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Prod-WebHealthStack",
+         "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+         "RoleArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":iam::353548851308:role/cdk-hnb659fds-cfn-exec-role-353548851308-ap-southeast-2"
+           ]
+          ]
+         },
+         "ActionMode": "CHANGE_SET_REPLACE",
+         "ChangeSetName": "PipelineChange",
+         "TemplatePath": "Synth_Output::assembly-WebHealthPipelineStack-Prod/WebHealthPipelineStackProdWebHealthStack933BD38C.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "WebHealthStack.Prepare",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        },
+        "RunOrder": 2
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Prod-WebHealthStack",
+         "ActionMode": "CHANGE_SET_EXECUTE",
+         "ChangeSetName": "PipelineChange"
+        },
+        "Name": "WebHealthStack.Deploy",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::353548851308:role/cdk-hnb659fds-deploy-role-353548851308-ap-southeast-2"
+          ]
+         ]
+        },
+        "RunOrder": 3
+       }
+      ],
+      "Name": "Prod"
+     }
+    ]
+   },
+   "DependsOn": [
+    "WebHealthPipelineRoleDefaultPolicyDC9FA285",
+    "WebHealthPipelineRole505806FA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Resource"
+   }
+  },
+  "WebHealthPipelineSourceawfulkaoWSUDevOps2025WebhookResourceA9E215A1": {
+   "Type": "AWS::CodePipeline::Webhook",
+   "Properties": {
+    "Authentication": "GITHUB_HMAC",
+    "AuthenticationConfiguration": {
+     "SecretToken": "{{resolve:secretsmanager:github-token:SecretString:::}}"
+    },
+    "Filters": [
+     {
+      "JsonPath": "$.ref",
+      "MatchEquals": "refs/heads/{Branch}"
+     }
+    ],
+    "RegisterWithThirdParty": true,
+    "TargetAction": "awfulkao_WSU_DevOps_2025",
+    "TargetPipeline": {
+     "Ref": "WebHealthPipeline2D472B15"
+    },
+    "TargetPipelineVersion": 1
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Source/awfulkao_WSU_DevOps_2025/WebhookResource"
+   }
+  },
+  "WebHealthPipelineBuildSynthCdkBuildProjectRole16CA354E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Build/Synth/CdkBuildProject/Role/Resource"
+   }
+  },
+  "WebHealthPipelineBuildSynthCdkBuildProjectRoleDefaultPolicy1C9DF21A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53"
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:codebuild:ap-southeast-2:353548851308:report-group/",
+          {
+           "Ref": "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineBuildSynthCdkBuildProjectRoleDefaultPolicy1C9DF21A",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineBuildSynthCdkBuildProjectRole16CA354E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Build/Synth/CdkBuildProject/Role/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step WebHealthPipelineStack/Pipeline/Build/Synth",
+    "EncryptionKey": "alias/aws/s3",
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineBuildSynthCdkBuildProjectRole16CA354E",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"python -m pip install --upgrade pip\",\n        \"pip install -r requirements.txt\",\n        \"cdk synth\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"base-directory\": \"cdk.out\",\n    \"files\": \"**/*\"\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Build/Synth/CdkBuildProject/Resource"
+   }
+  },
+  "WebHealthPipelineBetaUnitTestsRole8EAC11FD": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Beta/UnitTests/UnitTests/Role/Resource"
+   }
+  },
+  "WebHealthPipelineBetaUnitTestsRoleDefaultPolicyA1E3B360": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineBetaUnitTestsDDA63534"
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineBetaUnitTestsDDA63534"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:codebuild:ap-southeast-2:353548851308:report-group/",
+          {
+           "Ref": "WebHealthPipelineBetaUnitTestsDDA63534"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineBetaUnitTestsRoleDefaultPolicyA1E3B360",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineBetaUnitTestsRole8EAC11FD"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Beta/UnitTests/UnitTests/Role/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipelineBetaUnitTestsDDA63534": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step WebHealthPipelineStack/Pipeline/Beta/UnitTests",
+    "EncryptionKey": "alias/aws/s3",
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineBetaUnitTestsRole8EAC11FD",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"python -m pip install --upgrade pip\",\n        \"pip install -r requirements.txt\",\n        \"pytest -q --maxfail=1\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Beta/UnitTests/UnitTests/Resource"
+   }
+  },
+  "WebHealthPipelineGammaIntegrationTestsRole5FF1CE96": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Gamma/IntegrationTests/IntegrationTests/Role/Resource"
+   }
+  },
+  "WebHealthPipelineGammaIntegrationTestsRoleDefaultPolicy3839F0AB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineGammaIntegrationTests639D8036"
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineGammaIntegrationTests639D8036"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:codebuild:ap-southeast-2:353548851308:report-group/",
+          {
+           "Ref": "WebHealthPipelineGammaIntegrationTests639D8036"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineGammaIntegrationTestsRoleDefaultPolicy3839F0AB",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineGammaIntegrationTestsRole5FF1CE96"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Gamma/IntegrationTests/IntegrationTests/Role/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipelineGammaIntegrationTests639D8036": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step WebHealthPipelineStack/Pipeline/Gamma/IntegrationTests",
+    "EncryptionKey": "alias/aws/s3",
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineGammaIntegrationTestsRole5FF1CE96",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"python -m pip install --upgrade pip\",\n        \"pip install -r requirements.txt\",\n        \"pytest tests/integration -q --maxfail=1\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Gamma/IntegrationTests/IntegrationTests/Resource"
+   }
+  },
+  "WebHealthPipelineProdManualApprovalBeforeProdCodePipelineActionRole89A0CE3F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::353548851308:root"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Pipeline/Prod/ManualApprovalBeforeProd/CodePipelineActionRole/Resource"
+   }
+  },
+  "WebHealthPipelineCodeBuildActionRole8572EFE5": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "WebHealthPipelineRole505806FA",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/CodeBuildActionRole/Resource"
+   }
+  },
+  "WebHealthPipelineCodeBuildActionRoleDefaultPolicy45547AB4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineAssetsFileAsset184D6268B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineAssetsFileAsset2D9A4BDA0",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineBetaUnitTestsDDA63534",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineBuildSynthCdkBuildProject3CB00B53",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineGammaIntegrationTests639D8036",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineCodeBuildActionRoleDefaultPolicy45547AB4",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineCodeBuildActionRole8572EFE5"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/CodeBuildActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipelineUpdatePipelineSelfMutationRole9E83793E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/UpdatePipeline/SelfMutation/Role/Resource"
+   }
+  },
+  "WebHealthPipelineUpdatePipelineSelfMutationRoleDefaultPolicy067B4BFF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1"
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/",
+           {
+            "Ref": "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:codebuild:ap-southeast-2:353548851308:report-group/",
+          {
+           "Ref": "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Condition": {
+        "ForAnyValue:StringEquals": {
+         "iam:ResourceTag/aws-cdk:bootstrap-role": [
+          "image-publishing",
+          "file-publishing",
+          "deploy"
+         ]
+        }
+       },
+       "Effect": "Allow",
+       "Resource": "arn:*:iam::353548851308:role/*"
+      },
+      {
+       "Action": [
+        "cloudformation:DescribeStacks",
+        "s3:ListBucket"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineUpdatePipelineSelfMutationRoleDefaultPolicy067B4BFF",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineUpdatePipelineSelfMutationRole9E83793E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/UpdatePipeline/SelfMutation/Role/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipelineUpdatePipelineSelfMutation5BD8BFC1": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step WebHealthPipelineStack/Pipeline/UpdatePipeline/SelfMutate",
+    "EncryptionKey": "alias/aws/s3",
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "Name": "WebHealthPipeline-selfupdate",
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineUpdatePipelineSelfMutationRole9E83793E",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk@2\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk -a . deploy WebHealthPipelineStack --require-approval=never --verbose\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/UpdatePipeline/SelfMutation/Resource"
+   }
+  },
+  "WebHealthPipelineAssetsFileRole0CD2E979": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Assets/FileRole/Resource"
+   }
+  },
+  "WebHealthPipelineAssetsFileRoleDefaultPolicy07FD2A63": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:logs:ap-southeast-2:353548851308:log-group:/aws/codebuild/*"
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:codebuild:ap-southeast-2:353548851308:report-group/*"
+      },
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Sub": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-file-publishing-role-353548851308-ap-southeast-2"
+       }
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebHealthPipelineArtifactsBucket5FCCC92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebHealthPipelineArtifactsBucket5FCCC92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebHealthPipelineAssetsFileRoleDefaultPolicy07FD2A63",
+    "Roles": [
+     {
+      "Ref": "WebHealthPipelineAssetsFileRole0CD2E979"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Assets/FileRole/DefaultPolicy/Resource"
+   }
+  },
+  "WebHealthPipelineAssetsFileAsset184D6268B": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step WebHealthPipelineStack/Pipeline/Assets/FileAsset1",
+    "EncryptionKey": "alias/aws/s3",
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineAssetsFileRole0CD2E979",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g cdk-assets@2\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk-assets --path \\\"assembly-WebHealthPipelineStack-Beta/WebHealthPipelineStackBetaWebHealthStackB2FC8A21.assets.json\\\" --verbose publish \\\"145504d2a80569ff377de69b0cdc0fb6a7f54002e3d2611a621e03e7ff826de2:353548851308-ap-southeast-2\\\"\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Assets/FileAsset1/Resource"
+   }
+  },
+  "WebHealthPipelineAssetsFileAsset2D9A4BDA0": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step WebHealthPipelineStack/Pipeline/Assets/FileAsset2",
+    "EncryptionKey": "alias/aws/s3",
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "WebHealthPipelineAssetsFileRole0CD2E979",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g cdk-assets@2\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk-assets --path \\\"assembly-WebHealthPipelineStack-Beta/WebHealthPipelineStackBetaWebHealthStackB2FC8A21.assets.json\\\" --verbose publish \\\"ce2f3595a340d6c519a65888ef97e3b9b64f053f83608e32cc28162e22d7d99a:353548851308-ap-southeast-2\\\"\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/WebHealthPipeline/Assets/FileAsset2/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/01OQQ6DMAx7C/eSDdD2gPEBxA47TlAyESgE0SKEqv59gsLYyY5tOY4hut3hGhSzDmXVhopKsE9TyFYMNKCiHjWkXGG2X6KY9dtKrvDwwf689NP/8xeWNXPrhE7APibZolnlnXnIWJFcTtnfTlDRgc1ZbUUbnskjs64oJ1LVOSEbuUG5vdmpcyJHzdMofdXOncgWU3N/SSCKIQkaTRSOU2+oQ8g9fgH3EX9wHQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "WebHealthPipelineStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

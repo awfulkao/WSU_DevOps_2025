@@ -1,0 +1,20 @@
+{
+  "version": "36.3.0",
+  "files": {
+    "a72c105ddccdbaf56a81d069350114366fc62a217d1957f8017faa361e9d8c42": {
+      "source": {
+        "path": "WebHealthPipelineStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "353548851308-ap-southeast-2": {
+          "bucketName": "cdk-hnb659fds-assets-353548851308-ap-southeast-2",
+          "objectKey": "a72c105ddccdbaf56a81d069350114366fc62a217d1957f8017faa361e9d8c42.json",
+          "region": "ap-southeast-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::353548851308:role/cdk-hnb659fds-file-publishing-role-353548851308-ap-southeast-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
