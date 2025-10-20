@@ -1,6 +1,7 @@
 from aws_cdk import (
     Stack,
     Duration,
+    CfnOutput,
     aws_lambda as _lambda,
     aws_logs as logs,
     aws_iam as iam,
@@ -43,13 +44,6 @@ class HelloLambdaStack(Stack):
             timeout=Duration.seconds(15)
         )
 
-        # If your CDK version supports log retention directly, you can uncomment below:
-        # log_group = logs.LogGroup(
-        #     self, "MyFunctionLogGroup",
-        #     log_group_name=f"/aws/lambda/{fn.function_name}",
-        #     retention=logs.RetentionDays.ONE_DAY
-        # )
-
         fn.add_to_role_policy(
             iam.PolicyStatement(
                 actions=["cloudwatch:PutMetricData"],
@@ -67,7 +61,7 @@ class HelloLambdaStack(Stack):
         schedule_rule.add_target(targets.LambdaFunction(fn))
 
         # -------------------------------
-        # 2b. Invoke Lambda once immediately after deployment
+        # 2b. Invoke Lambda once after deployment
         # -------------------------------
         cr.AwsCustomResource(
             self, "InvokeLambdaOnce",
@@ -76,7 +70,7 @@ class HelloLambdaStack(Stack):
                 action="invoke",
                 parameters={
                     "FunctionName": fn.function_name,
-                    "InvocationType": "Event"  # async call
+                    "InvocationType": "Event"
                 },
                 physical_resource_id=cr.PhysicalResourceId.of("InvokeOnceResource")
             ),
@@ -157,12 +151,11 @@ class HelloLambdaStack(Stack):
         # 5. DynamoDB Table
         # -------------------------------
         alarm_table = dynamodb.Table(
-    self, "AlarmLogsTable",
-    table_name=f"AlarmLogsTable-{self.stack_name}",
-    partition_key=dynamodb.Attribute(name="AlarmName", type=dynamodb.AttributeType.STRING),
-    sort_key=dynamodb.Attribute(name="Timestamp", type=dynamodb.AttributeType.STRING)
-)
-
+            self, "AlarmLogsTable",
+            table_name=f"AlarmLogsTable-{self.stack_name}",
+            partition_key=dynamodb.Attribute(name="AlarmName", type=dynamodb.AttributeType.STRING),
+            sort_key=dynamodb.Attribute(name="Timestamp", type=dynamodb.AttributeType.STRING)
+        )
 
         # -------------------------------
         # 6. Alarm Logger Lambda
@@ -178,8 +171,6 @@ class HelloLambdaStack(Stack):
         )
 
         alarm_table.grant_write_data(logger_fn)
-
-        # Subscribe logger Lambda to SNS topic
         alarm_topic.add_subscription(subs.LambdaSubscription(logger_fn))
 
         # -------------------------------
@@ -221,3 +212,20 @@ class HelloLambdaStack(Stack):
                     left=[latency_metric]
                 )
             )
+
+        # -------------------------------
+        # 9. CDK Outputs for Integration Testing
+        # -------------------------------
+        CfnOutput(
+            self,
+            "CrawlerLambdaFunctionName",
+            value=fn.function_name,
+            description="Lambda function name for the web crawler"
+        )
+
+        CfnOutput(
+            self,
+            "AlarmLoggerLambdaName",
+            value=logger_fn.function_name,
+            description="Lambda function name for alarm logger"
+        )

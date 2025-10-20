@@ -1,9 +1,11 @@
 import boto3
 import json
 import pytest
+import os
 
 REGION = "ap-southeast-2"
 STACK_PREFIX = "Gamma-WebHealthStack"  # or "Beta-WebHealthStack" if testing Beta stage
+LAMBDA_NAME = os.environ["LAMBDA_NAME"]
 
 @pytest.fixture(scope="session")
 def lambda_client():
