@@ -53,7 +53,8 @@ class PipelineStack(Stack):
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r Nandin-Erdene/requirements.txt",
                 "npm install -g aws-cdk@2.156.0",
-                "cdk synth Nandin-Erdene"
+                "cd Nandin-Erdene",
+                "cdk synth"
             ],
             primary_output_directory="Nandin-Erdene/cdk.out"
         )
