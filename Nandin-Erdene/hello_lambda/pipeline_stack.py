@@ -50,6 +50,7 @@ class PipelineStack(Stack):
             input=source,
             commands=[
                 # install python env & deps
+                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r requirements.txt",
                 "npm install -g aws-cdk@2.156.0",
@@ -73,6 +74,7 @@ class PipelineStack(Stack):
         unit_test_step = pipelines.ShellStep(
             "UnitTests",
             commands=[
+                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r requirements.txt",
                 "pytest -q --maxfail=1 --disable-warnings"
@@ -93,6 +95,7 @@ class PipelineStack(Stack):
         integration_test_step = pipelines.ShellStep(
             "IntegrationTests",
             commands=[
+                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r requirements.txt",
                 # run any integration tests you place under tests/integration
