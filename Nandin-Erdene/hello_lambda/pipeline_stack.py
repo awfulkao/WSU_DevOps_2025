@@ -74,6 +74,7 @@ class PipelineStack(Stack):
         unit_test_step = pipelines.ShellStep(
             "UnitTests",
             commands=[
+                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r Nandin-Erdene/requirements.txt",
                 "pytest -q --maxfail=1 --disable-warnings"
