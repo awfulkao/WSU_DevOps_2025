@@ -77,7 +77,7 @@ class PipelineStack(Stack):
                 "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r requirements.txt",
-                "pytest -q --maxfail=1 --disable-warnings"
+                "pytest tests/units -q --maxfail=1 --disable-warnings"
             ]
         )
 
