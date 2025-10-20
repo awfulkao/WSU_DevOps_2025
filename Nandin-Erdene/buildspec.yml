@@ -16,6 +16,8 @@ phases:
   build:
     commands:
       - cd Nandin-Erdene
+      - pwd
+      - ls -R lib/lambda_handler
       - npx cdk synth
 
 artifacts:
