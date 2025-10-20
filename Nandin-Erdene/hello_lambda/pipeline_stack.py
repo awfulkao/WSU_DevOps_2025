@@ -50,11 +50,9 @@ class PipelineStack(Stack):
             input=source,
             commands=[
                 # install python env & deps
-                "python -m pip install --upgrade pip",
-                "pip install -r requirements.txt",
-                # install CDK CLI if necessary (optional)
-                # "npm install -g aws-cdk",
-                # run synth
+                "python3 -m pip install --upgrade pip",
+                "python3 -m pip install -r requirements.txt",
+                "npm install -g aws-cdk@2.156.0",
                 "cdk synth"
             ],
             primary_output_directory="cdk.out"
@@ -75,9 +73,9 @@ class PipelineStack(Stack):
         unit_test_step = pipelines.ShellStep(
             "UnitTests",
             commands=[
-                "python -m pip install --upgrade pip",
-                "pip install -r requirements.txt",
-                "pytest -q --maxfail=1"
+                "python3 -m pip install --upgrade pip",
+                "python3 -m pip install -r requirements.txt",
+                "pytest -q --maxfail=1 --disable-warnings"
             ]
         )
 
@@ -95,10 +93,10 @@ class PipelineStack(Stack):
         integration_test_step = pipelines.ShellStep(
             "IntegrationTests",
             commands=[
-                "python -m pip install --upgrade pip",
-                "pip install -r requirements.txt",
+                "python3 -m pip install --upgrade pip",
+                "python3 -m pip install -r requirements.txt",
                 # run any integration tests you place under tests/integration
-                "pytest tests/integration -q --maxfail=1"
+                "pytest tests/integration -q --maxfail=1 --disable-warnings"
             ]
         )
         gamma_stage = WebHealthAppStage(self, "Gamma", env=beta_env)

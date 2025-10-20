@@ -15,6 +15,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 
+
 class HelloLambdaStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
@@ -38,11 +39,17 @@ class HelloLambdaStack(Stack):
             function_name="MyFunction",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="WHlambda.lambda_handler",
-            code=_lambda.Code.from_asset("lib/lambda-handler"),
+            code=_lambda.Code.from_asset("lib/lambda_handler"),
             environment={"URLS": ",".join(urls)},
-            log_retention=logs.RetentionDays.ONE_DAY,
             timeout=Duration.seconds(15)
         )
+
+        # If your CDK version supports log retention directly, you can uncomment below:
+        # log_group = logs.LogGroup(
+        #     self, "MyFunctionLogGroup",
+        #     log_group_name=f"/aws/lambda/{fn.function_name}",
+        #     retention=logs.RetentionDays.ONE_DAY
+        # )
 
         fn.add_to_role_policy(
             iam.PolicyStatement(
@@ -97,7 +104,13 @@ class HelloLambdaStack(Stack):
         latency_alarms = []
 
         for url in urls:
-            safe_id = url.replace("https://", "").replace("http://", "").replace(".", "").replace("/", "").replace("-", "")
+            safe_id = (
+                url.replace("https://", "")
+                .replace("http://", "")
+                .replace(".", "")
+                .replace("/", "")
+                .replace("-", "")
+            )
 
             # Availability metric & alarm
             availability_metric = cloudwatch.Metric(
@@ -106,6 +119,7 @@ class HelloLambdaStack(Stack):
                 statistic="Average",
                 dimensions_map={"URL": url}
             )
+
             avail_alarm = cloudwatch.Alarm(
                 self, f"AvailabilityAlarm{safe_id}",
                 comparison_operator=cloudwatch.ComparisonOperator.LESS_THAN_THRESHOLD,
@@ -123,6 +137,7 @@ class HelloLambdaStack(Stack):
                 statistic="Average",
                 dimensions_map={"URL": url}
             )
+
             lat_alarm = cloudwatch.Alarm(
                 self, f"LatencyAlarm{safe_id}",
                 comparison_operator=cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
@@ -144,8 +159,14 @@ class HelloLambdaStack(Stack):
         # -------------------------------
         alarm_table = dynamodb.Table(
             self, "AlarmLogsTable",
-            partition_key=dynamodb.Attribute(name="AlarmName", type=dynamodb.AttributeType.STRING),
-            sort_key=dynamodb.Attribute(name="Timestamp", type=dynamodb.AttributeType.STRING)
+            partition_key=dynamodb.Attribute(
+                name="AlarmName",
+                type=dynamodb.AttributeType.STRING
+            ),
+            sort_key=dynamodb.Attribute(
+                name="Timestamp",
+                type=dynamodb.AttributeType.STRING
+            )
         )
 
         # -------------------------------
@@ -156,9 +177,11 @@ class HelloLambdaStack(Stack):
             "AlarmLoggerFn",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="alarm_logger.lambda_handler",
-            code=_lambda.Code.from_asset("lib/lambda-handler"),
-            environment={"TABLE_NAME": alarm_table.table_name}
+            code=_lambda.Code.from_asset("lib/lambda_handler"),
+            environment={"TABLE_NAME": alarm_table.table_name},
+            timeout=Duration.seconds(10)
         )
+
         alarm_table.grant_write_data(logger_fn)
 
         # Subscribe logger Lambda to SNS topic
@@ -176,7 +199,7 @@ class HelloLambdaStack(Stack):
         # -------------------------------
         dashboard = cloudwatch.Dashboard(
             self, "WebsiteHealthDashboard",
-            default_interval=Duration.days(7),
+            default_interval=Duration.days(7)
         )
 
         for url in urls:
@@ -192,7 +215,14 @@ class HelloLambdaStack(Stack):
                 statistic="Average",
                 dimensions_map={"URL": url}
             )
+
             dashboard.add_widgets(
-                cloudwatch.GraphWidget(title=f"Availability - {url}", left=[availability_metric]),
-                cloudwatch.GraphWidget(title=f"Latency - {url}", left=[latency_metric])
+                cloudwatch.GraphWidget(
+                    title=f"Availability - {url}",
+                    left=[availability_metric]
+                ),
+                cloudwatch.GraphWidget(
+                    title=f"Latency - {url}",
+                    left=[latency_metric]
+                )
             )

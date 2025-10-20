@@ -1,8 +1,7 @@
 # tests/test_unit_lambda.py
 import time
-import types
-from unittest import mock
-import WHlambda
+import json
+from lib.lambda_handler import WHlambda
 
 class DummyResp:
     def __init__(self, status, data=b"OK"):
@@ -16,7 +15,10 @@ def test_lambda_handler_success(monkeypatch):
         def request(self, method, url, timeout):
             return dummy
 
+    # Avoid real AWS calls during tests
     monkeypatch.setattr(WHlambda, "http", DummyPool())
+    monkeypatch.setattr(WHlambda, "cloudwatch", type("C", (), {"put_metric_data": lambda *a, **k: None})())
+
     event = {"urls": ["https://www.example.com"]}
     result = WHlambda.lambda_handler(event, None)
     assert result["statusCode"] == 200
@@ -30,6 +32,8 @@ def test_lambda_handler_failure(monkeypatch):
             raise Exception("connection error")
 
     monkeypatch.setattr(WHlambda, "http", DummyPool())
+    monkeypatch.setattr(WHlambda, "cloudwatch", type("C", (), {"put_metric_data": lambda *a, **k: None})())
+
     event = {"urls": ["https://doesnotexist.local"]}
     result = WHlambda.lambda_handler(event, None)
     assert result["statusCode"] == 200
