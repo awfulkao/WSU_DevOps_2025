@@ -10,7 +10,7 @@ phases:
   build:
     commands:
       - cd Nandin-Erdene
-      - cdk synth
+      - npx cdk synth
 artifacts:
   base-directory: Nandin-Erdene/cdk.out
   files:
