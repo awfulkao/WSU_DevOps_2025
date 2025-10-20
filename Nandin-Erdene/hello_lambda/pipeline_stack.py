@@ -76,7 +76,7 @@ class PipelineStack(Stack):
             commands=[
                 "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
-                "python3 -m pip install -r Nandin-Erdene/requirements.txt",
+                "python3 -m pip install -r requirements.txt",
                 "pytest -q --maxfail=1 --disable-warnings"
             ]
         )
@@ -95,8 +95,9 @@ class PipelineStack(Stack):
         integration_test_step = pipelines.ShellStep(
             "IntegrationTests",
             commands=[
+                "cd Nandin-Erdene"
                 "python3 -m pip install --upgrade pip",
-                "python3 -m pip install -r Nandin-Erdene/requirements.txt",
+                "python3 -m pip install -r requirements.txt",
                 # run any integration tests you place under tests/integration
                 "pytest tests/integration -q --maxfail=1 --disable-warnings"
             ]
