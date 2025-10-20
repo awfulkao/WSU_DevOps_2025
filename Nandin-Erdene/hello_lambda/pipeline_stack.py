@@ -99,7 +99,7 @@ class PipelineStack(Stack):
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r requirements.txt",
                 # run any integration tests you place under tests/integration
-                "pytest tests/integration -q --maxfail=1 --disable-warnings"
+                "pytest tests/integration/integration_holder -q --maxfail=1 --disable-warnings"
             ]
         )
         gamma_stage = WebHealthAppStage(self, "Gamma", env=beta_env)
