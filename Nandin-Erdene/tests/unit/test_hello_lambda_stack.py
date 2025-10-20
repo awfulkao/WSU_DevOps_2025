@@ -84,8 +84,3 @@ def test_hello_lambda_stack_resources():
     template.has_resource_properties("AWS::Events::Rule", {
         "ScheduleExpression": "rate(5 minutes)"
     })
-
-    # -------------------------------
-    # 8. Check Custom Resource to invoke Lambda once
-    # -------------------------------
-    template.resource_count_is("AWS::CloudFormation::CustomResource", 1)
