@@ -16,15 +16,6 @@ phases:
   build:
     commands:
       - cd Nandin-Erdene
-
-      # Ensure Lambda folder exists
-      - mkdir -p lib/lambda_handler
-
-      # Create dummy Lambda for CI/CD (avoids "Cannot find asset" errors)
-      - echo "def lambda_handler(event, context): return {'statusCode': 200, 'body': 'Placeholder'}" > lib/lambda_handler/WHlambda.py
-      - echo "def lambda_handler(event, context): return {'statusCode': 200, 'body': 'Placeholder'}" > lib/lambda_handler/alarm_logger.py
-
-      # Synthesize CDK stack
       - npx cdk synth
 
 artifacts:
