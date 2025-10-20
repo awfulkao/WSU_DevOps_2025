@@ -39,7 +39,7 @@ class HelloLambdaStack(Stack):
             function_name="MyFunction",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="WHlambda.lambda_handler",
-            code=_lambda.Code.from_asset("lib/lambda_handler"),
+            code=_lambda.Code.from_asset("Nandin-Erdene/lib/lambda_handler"),
             environment={"URLS": ",".join(urls)},
             timeout=Duration.seconds(15)
         )
