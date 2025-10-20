@@ -95,7 +95,7 @@ class PipelineStack(Stack):
         integration_test_step = pipelines.ShellStep(
             "IntegrationTests",
             commands=[
-                "cd Nandin-Erdene"
+                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
                 "python3 -m pip install -r requirements.txt",
                 # run any integration tests you place under tests/integration
