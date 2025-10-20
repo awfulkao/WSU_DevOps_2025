@@ -36,7 +36,6 @@ class HelloLambdaStack(Stack):
         fn = _lambda.Function(
             self,
             "MyFunction",
-            function_name="MyFunction",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="WHlambda.lambda_handler",
             code=_lambda.Code.from_asset("lib/lambda_handler"),
@@ -158,16 +157,12 @@ class HelloLambdaStack(Stack):
         # 5. DynamoDB Table
         # -------------------------------
         alarm_table = dynamodb.Table(
-            self, "AlarmLogsTable",
-            partition_key=dynamodb.Attribute(
-                name="AlarmName",
-                type=dynamodb.AttributeType.STRING
-            ),
-            sort_key=dynamodb.Attribute(
-                name="Timestamp",
-                type=dynamodb.AttributeType.STRING
-            )
-        )
+    self, "AlarmLogsTable",
+    table_name=f"AlarmLogsTable-{self.stack_name}",
+    partition_key=dynamodb.Attribute(name="AlarmName", type=dynamodb.AttributeType.STRING),
+    sort_key=dynamodb.Attribute(name="Timestamp", type=dynamodb.AttributeType.STRING)
+)
+
 
         # -------------------------------
         # 6. Alarm Logger Lambda
