@@ -50,13 +50,12 @@ class PipelineStack(Stack):
             input=source,
             commands=[
                 # install python env & deps
-                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
-                "python3 -m pip install -r requirements.txt",
+                "python3 -m pip install -r Nandin-Erdene/requirements.txt",
                 "npm install -g aws-cdk@2.156.0",
-                "cdk synth"
+                "cdk synth Nandin-Erdene"
             ],
-            primary_output_directory="cdk.out"
+            primary_output_directory="Nandin-Erdene/cdk.out"
         )
 
         # ------------------------
@@ -74,9 +73,8 @@ class PipelineStack(Stack):
         unit_test_step = pipelines.ShellStep(
             "UnitTests",
             commands=[
-                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
-                "python3 -m pip install -r requirements.txt",
+                "python3 -m pip install -r Nandin-Erdene/requirements.txt",
                 "pytest -q --maxfail=1 --disable-warnings"
             ]
         )
@@ -95,9 +93,8 @@ class PipelineStack(Stack):
         integration_test_step = pipelines.ShellStep(
             "IntegrationTests",
             commands=[
-                "cd Nandin-Erdene",
                 "python3 -m pip install --upgrade pip",
-                "python3 -m pip install -r requirements.txt",
+                "python3 -m pip install -r Nandin-Erdene/requirements.txt",
                 # run any integration tests you place under tests/integration
                 "pytest tests/integration -q --maxfail=1 --disable-warnings"
             ]
