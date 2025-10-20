@@ -5,11 +5,11 @@ phases:
     runtime-versions:
       python: 3.12
     commands:
-      - pip install -r Nandin-Erdene/requirements.txt
+      - cd Nandin-Erdene
+      - pip install -r requirements.txt
       - npm install -g aws-cdk@2.156.0
   build:
     commands:
-      - cd Nandin-Erdene
       - npx cdk synth
 artifacts:
   base-directory: Nandin-Erdene/cdk.out
